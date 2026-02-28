@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\createTaskRequest;
+use App\Models\Category;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -53,7 +54,31 @@ class TaskController extends Controller
 
         $user = Task::findOrFail($id)->user;
 
-        return response()->json($user,200);
+        return response()->json($user, 200);
+
+    }
+
+    public function addCategoriesToTask(Request $request, $taskId)
+    {
+        $task = Task::findOrFail($taskId);
+
+        $task->categories()->syncWithoutDetaching($request->category_id);
+
+        return response()->json('Category attach successfully', 200);
+    }
+
+    public function getTaskCategories($taskId)
+    {
+        $categories = Task::findOrFail($taskId)->categories;
+
+        return response()->json($categories, 200);
+    }
+
+    public function getCategoriesTasks($categoryId)
+    {
+        $tasks = Category::findOrFail($categoryId)->tasks;
+
+        return response()->json($tasks, 200);
 
     }
 }

@@ -35,8 +35,6 @@ class userController extends Controller
       
     $tasks = User::findOrFail($id)->tasks;
 
-       
-
         return response()->json($tasks ,200);
     }
 }
