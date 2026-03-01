@@ -18,9 +18,9 @@ Route::get('/users/tasks',[userController::class,'getUserTasks'])->middleware('a
 
 Route::post('/tasks', [TaskController::class, 'createTask'])->middleware('auth:sanctum');
 Route::get('/tasks', [TaskController::class, 'getAllTasks']);
-Route::put('/tasks/{id}', [TaskController::class, 'updateTask']);
+Route::put('/tasks/{id}', [TaskController::class, 'updateTask'])->middleware('auth:sanctum');
 Route::get('/tasks/{id}', [TaskController::class, 'findOne']);
-Route::delete('/tasks/{id}', [TaskController::class, 'deleteTask']);
+Route::delete('/tasks/{id}', [TaskController::class, 'deleteTask'])->middleware('auth:sanctum');
 Route::get('/tasks/{id}/user',[TaskController::class,'getTaskUser']);
 
 Route::post('/profile', [profileController::class, 'CreateProfile'])->middleware('auth:sanctum');

@@ -8,7 +8,6 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
 class TaskController extends Controller
 {
     public function getAllTasks()
@@ -21,14 +20,18 @@ class TaskController extends Controller
 
         $task = Task::create([
             ...$createTaskRequest->validated(),
-            'user_id'=> Auth::id()]
-            );
+            'user_id' => Auth::id()]
+        );
+
         return response()->json($task, 201);
     }
 
     public function updateTask(Request $request, $id)
     {
+
         $task = Task::findOrFail($id);
+
+        $this->authorize('update', $task);
         $task->update(
             $request->validate([
                 'title' => 'sometimes|string|max:40',
@@ -48,6 +51,8 @@ class TaskController extends Controller
     public function deleteTask($id)
     {
         $task = Task::findOrFail($id);
+        $this->authorize('delete', $task);
+
         $task->delete();
     }
 
