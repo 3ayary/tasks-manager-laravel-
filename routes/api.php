@@ -3,13 +3,9 @@
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\userController;
-use App\Http\Controllers\welcomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/welcome', [welcomeController::class, 'getWelcome']);
-
-
-Route::get('/users', [userController::class, 'getAllUsers']);
+Route::get('/users', [userController::class, 'getAllUsers'])->middleware('auth:sanctum');
 Route::get('/user/{id}', [userController::class, 'getOneUser']);
 Route::get('/users/{id}/profile',[userController::class,'getProfile']);
 Route::get('/users/{id}/tasks',[userController::class,'getUserTasks']);
@@ -31,6 +27,9 @@ Route::get('/tasks/{taskId}/categories',[TaskController::class,'getTaskCategorie
 Route::get('/categories/{categoryId}/tasks',[TaskController::class,'getCategoriesTasks']);
 
 
+Route::get('/login',[userController::class,'login']);
+Route::post('/register',[userController::class,'register']);
+Route::get('/logout',[userController::class,'logout'])->middleware('auth:sanctum'); 
 
 
 
