@@ -46,17 +46,17 @@ class userController extends Controller
             'message' => 'login successfully',
             'User' => $user,
             'token' => $token,
-        ], 201);
+        ], 200);
 
     }
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete() ;
+        $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'logout successfully'
-        ], 201);
+            'message' => 'logout successfully',
+        ], 200);
     }
 
     public function getAllUsers()
@@ -66,23 +66,25 @@ class userController extends Controller
         return response()->json($users, 200);
     }
 
-    public function getOneUser(int $id)
+    public function getOneUser()
     {
-        $user = User::findOrFail($id);
+        $user = Auth::user();
 
         return response()->json($user, 200);
     }
 
-    public function getProfile(int $id)
+    public function getProfile()
     {
 
+        $id = Auth::id();
         $profile = User::findOrFail($id)->profile;
 
         return response()->json($profile, 200);
     }
 
-    public function getUserTasks(int $id)
+    public function getUserTasks()
     {
+        $id = Auth::id( );
 
         $tasks = User::findOrFail($id)->tasks;
 

@@ -4,18 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\profileRequest;
 use App\Models\Profile;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class profileController extends Controller
 {
+    public function CreateProfile(profileRequest $request)
+    {
+        $profile = Profile::create([
+            ...$request->validated(),
+            'user_id' => Auth::id()]);
 
-
-function CreateProfile(profileRequest $request){
-  $profile =  Profile::create($request->validated());
-  return response()->json([
-    'message'=>'profile created successfully.',
-    'profile'=>$profile
-  ],201);
-}
-
+        return response()->json([
+            'message' => 'profile created successfully.',
+            'profile' => $profile,
+        ], 201);
+    }
 }
