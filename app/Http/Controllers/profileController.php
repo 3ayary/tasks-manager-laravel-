@@ -10,9 +10,22 @@ class profileController extends Controller
 {
     public function CreateProfile(profileRequest $request)
     {
-        $profile = Profile::create([
-            ...$request->validated(),
-            'user_id' => Auth::id()]);
+
+        $valiated = $request->validated();
+
+        $validated['user_id'] = Auth::id();
+
+        unset($validated['image']);
+
+        if ($request->hasFile('image')) {
+
+            $uploadedFile = Cloudinary()->uploadApi()->upload($request->file('image')->getRealPath(), ['folder' => 'profiles']);
+
+            $validated['image'] = $uploadedFile->offsetGet('secure_url');
+
+        }
+
+        $profile = Profile::create($validated);
 
         return response()->json([
             'message' => 'profile created successfully.',

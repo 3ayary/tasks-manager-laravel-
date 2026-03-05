@@ -25,7 +25,8 @@ class profileRequest extends FormRequest
             'phone'=>'required|string|max:15',
             'address'=>'nullable|string|max:100',
             'date_of_birth'=>'nullable|date',
-            'bio'=>'nullable|string'
+            'bio'=>'nullable|string',
+            'image'=>'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
         ];
     }
 }
