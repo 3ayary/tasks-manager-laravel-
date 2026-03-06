@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\welcomeMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class userController extends Controller
 {
@@ -23,6 +25,7 @@ class userController extends Controller
             'password' => Hash::make($request->password),
         ]
         );
+        Mail::to($user->email)->send(new WelcomeMail($user));
 
         return response()->json(['message' => 'user registered successfully', 'User' => $user], 201);
 
@@ -84,7 +87,7 @@ class userController extends Controller
 
     public function getUserTasks()
     {
-        $id = Auth::id( );
+        $id = Auth::id();
 
         $tasks = User::findOrFail($id)->tasks;
 
