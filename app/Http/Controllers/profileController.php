@@ -11,7 +11,7 @@ class profileController extends Controller
     public function CreateProfile(profileRequest $request)
     {
 
-        $valiated = $request->validated();
+        $validated = $request->validated();
 
         $validated['user_id'] = Auth::id();
 
