@@ -1,6 +1,6 @@
 # Task Management System API
 
-A RESTful API built with **Laravel** for managing tasks, users, and categories. Built as a backend learning project focused on real-world patterns: authentication, authorization, relational data modeling, and clean response structures.
+A RESTful API built with **Laravel** for managing tasks, users, and categories. Built as a backend learning project focused on real-world patterns: authentication, authorization, relational data modeling, image uploads, automated testing, and clean response structures.
 
 ---
 
@@ -10,6 +10,8 @@ A RESTful API built with **Laravel** for managing tasks, users, and categories. 
 - **MySQL**
 - **Laravel Sanctum** (token-based auth)
 - **Eloquent ORM**
+- **Cloudinary** (profile image uploads)
+- **Pest** (automated testing)
 
 ---
 
@@ -18,6 +20,8 @@ A RESTful API built with **Laravel** for managing tasks, users, and categories. 
 - **Authentication** — Register, login, and logout using Laravel Sanctum token-based authentication
 - **Task Management** — Full CRUD for tasks with filtering, pagination, and status-based querying
 - **User Profiles** — Create and retrieve user profiles linked to accounts
+- **Profile Image Upload** — Upload and store profile images via Cloudinary
+- **Welcome Email** — Automated welcome email sent to users upon registration
 - **Categories** — Attach and retrieve categories per task (Many-to-Many)
 - **Authorization** — Ownership-based access control using Laravel Policies (only task owners can modify their tasks)
 - **Admin Control** — Middleware-protected routes for admin-only operations
@@ -25,12 +29,14 @@ A RESTful API built with **Laravel** for managing tasks, users, and categories. 
 - **API Resources** — Standardized and consistent JSON responses across all endpoints
 - **Error Handling** — Centralized exception handling for uniform error responses
 - **Seeders & Factories** — Structured database seeding for development and testing
+- **Automated Testing** — Auth flow covered with Pest feature tests
 
 ---
 
 ## API Endpoints
 
 ### Auth
+
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
 | POST | `/api/register` | Register a new user | ❌ |
@@ -38,6 +44,7 @@ A RESTful API built with **Laravel** for managing tasks, users, and categories. 
 | GET | `/api/logout` | Logout and revoke token | ✅ |
 
 ### Users
+
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
 | GET | `/api/users` | Get all users | ❌ |
@@ -45,8 +52,10 @@ A RESTful API built with **Laravel** for managing tasks, users, and categories. 
 | GET | `/api/users/profile` | Get user profile | ✅ |
 | GET | `/api/users/tasks` | Get tasks for authenticated user | ✅ |
 | POST | `/api/profile` | Create user profile | ✅ |
+| POST | `/api/profile/image` | Upload profile image (Cloudinary) | ✅ |
 
 ### Tasks
+
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
 | GET | `/api/tasks` | Get all tasks (admin only) | ✅ Admin |
@@ -57,6 +66,7 @@ A RESTful API built with **Laravel** for managing tasks, users, and categories. 
 | GET | `/api/tasks/{id}/user` | Get task owner | ❌ |
 
 ### Categories
+
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
 | POST | `/api/tasks/{id}/categories` | Add categories to task | ❌ |
@@ -73,6 +83,12 @@ users
 ├── name
 ├── email
 ├── password
+└── timestamps
+
+profiles
+├── id
+├── user_id (FK → users)
+├── image_url (Cloudinary)
 └── timestamps
 
 tasks
@@ -95,6 +111,21 @@ category_task (pivot)
 
 ---
 
+## Testing
+
+This project uses **Pest** for automated feature testing.
+
+```bash
+php artisan test
+```
+
+Currently covered:
+- User registration
+- User login
+- Token-based logout
+
+---
+
 ## Getting Started
 
 ```bash
@@ -109,6 +140,9 @@ composer install
 cp .env.example .env
 php artisan key:generate
 
+# Add your Cloudinary credentials to .env
+CLOUDINARY_URL=cloudinary://your_api_key:your_api_secret@your_cloud_name
+
 # Configure your DB in .env then run:
 php artisan migrate --seed
 
@@ -120,4 +154,4 @@ php artisan serve
 
 ## What I Learned Building This
 
-This project was about understanding how a real backend system is structured — not just making endpoints work, but making them work correctly. I focused on: proper auth flows, policy-based authorization, keeping controllers thin, and returning consistent API responses regardless of success or error.
+This project was about understanding how a real backend system is structured — not just making endpoints work, but making them work correctly. I focused on: proper auth flows, policy-based authorization, keeping controllers thin, returning consistent API responses, integrating third-party services like Cloudinary, and writing automated tests with Pest to make sure the auth system behaves as expected.
